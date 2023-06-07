@@ -29,7 +29,6 @@ export default async function Dispatchers(){
             }
         ]
     }
-    console.log(props)
     return <div className="w-screen flex justify-center items-center gap-3">
         <DispatchersTable props={props}/>
     </div>

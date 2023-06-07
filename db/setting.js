@@ -20,7 +20,7 @@ export async function setDispatchersTableUpdateInterval(seconds){
         filename: './db/settings.db',
         driver: sqlite3.Database
       }).then(async (db) => {
-            await db.exec("update setting set value = ? where name = ?", (seconds, 'DispatchersTableUpdateInterval'))
+            await db.run("update setting set value = :value where name = :name", {":name": 'DispatchersTableUpdateInterval', ":value": seconds})
       });
 }
 
@@ -37,15 +37,12 @@ export async function getDrcTableUpdateInterval(){
       });
 }
 
+
 export async function setDrcTableUpdateInterval(seconds){
     return await open({
         filename: './db/settings.db',
         driver: sqlite3.Database
       }).then(async (db) => {
-            const result = await db.exec("update setting set value = ? where name = 'DrcTableUpdateInterval'", seconds)
-            if (result){
-                return Number(result.value)
-            }
-            return 300
+            await db.run("update setting set value = :value where name = :name", {":name": 'DrcTableUpdateInterval', ":value": seconds})
       });
 }
