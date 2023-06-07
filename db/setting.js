@@ -46,3 +46,36 @@ export async function setDrcTableUpdateInterval(seconds){
             await db.run("update setting set value = :value where name = :name", {":name": 'DrcTableUpdateInterval', ":value": seconds})
       });
 }
+
+
+export async function getDispatchersUser(){
+    return await open({
+        filename: './db/settings.db',
+        driver: sqlite3.Database
+      }).then(async (db) => {
+            const result = await db.get("select value from setting where name = ?", "DispatchersUser")
+            if (result){
+                return result.value
+            }
+      });
+}
+
+
+export async function setDispatchersUser(user){
+    return await open({
+        filename: './db/settings.db',
+        driver: sqlite3.Database
+      }).then(async (db) => {
+            await db.run("update setting set value = :value where name = :name", {":name": 'DispatchersUser', ":value": user})
+      });
+}
+
+export async function getAllGroups(){
+    return await open({
+        filename: './db/settings.db',
+        driver: sqlite3.Database
+      }).then(async (db) => {
+            const result = await db.all("select * from 'group'")
+            return result
+      });
+}

@@ -1,11 +1,15 @@
-import { setDispatchersTableUpdateInterval, Upda } from '@/db/setting';
+import { getDispatchersTableUpdateInterval, setDispatchersTableUpdateInterval } from '@/db/setting';
 import { NextResponse } from 'next/server';
 
 
-export async function GET(req, {params}) {
+export async function PUT(req, {params}) {
+    let success = false
     if (params && Number(params.seconds)){
         await setDispatchersTableUpdateInterval(Number(params.seconds))
-        return NextResponse.json({success: true})
+        const result = await getDispatchersTableUpdateInterval()
+        if(result && result == Number(params.seconds)){
+            success = true
+        }
     }
-    return NextResponse.json({success: false})
+    return NextResponse.json({success: success})
 }
